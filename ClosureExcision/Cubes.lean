@@ -437,7 +437,7 @@ theorem excision_surjective_zero {C : ClosureSpace X} {A B : Set X}
   rw [this]
   exact AddSubgroup.mem_sup_left (AddSubgroup.mem_sup_right (proj_mem_cubesIn hz))
 
-/-- **Theorem A.** If the `k`-fold interiors of `A` and `B` cover `X`, then every cube of
+/-- **Theorem 1.** If the `k`-fold interiors of `A` and `B` cover `X`, then every cube of
 dimension at most `2k` lies in `A` or in `B`, and for every `d ≤ 2k - 1` the excision map
 `H_d(B, A ∩ B) → H_d(X, A)` is injective and surjective. -/
 theorem excision_of_iterate_int_cover {C : ClosureSpace X} {A B : Set X} {k : ℕ}

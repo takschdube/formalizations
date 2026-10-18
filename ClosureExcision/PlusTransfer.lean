@@ -78,7 +78,7 @@ theorem isRelCycleP_iff (S T : Set X) (n : ℕ) (z : Chain X (n + 1)) :
   unfold IsRelCycleP IsRelCycle
   rw [cubesInP_eq hsymm, cubesInP_eq hsymm, degInP_eq hsymm]
 
-/-- **Theorem A for the directed interval** on a symmetric closure space. -/
+/-- **Theorem 1 for the directed interval** on a symmetric closure space. -/
 theorem plus_excision_of_iterate_int_cover {A B : Set X} {k : ℕ}
     (hcov : ∀ x, x ∈ C.int^[k] A ∨ x ∈ C.int^[k] B) (d : ℕ) (hd : d + 1 ≤ 2 * k) :
     (∀ z ∈ cubesInP C B d, NullRelP C Set.univ A d z → NullRelP C B (A ∩ B) d z) ∧
@@ -96,7 +96,7 @@ theorem plus_cube_small {n k : ℕ} {σ : (Fin n → Bool) → X} (hσ : C.IsPlu
 
 end Symmetric
 
-/-- **Theorem B for the directed interval.** -/
+/-- **Theorem 2 for the directed interval.** -/
 theorem q3_plus_excision_not_injective :
     ∃ z : Chain (Fin 3 → Bool) 2, IsRelCycleP q3 B3 (A3 ∩ B3) 1 z ∧
       NullRelP q3 Set.univ A3 2 z ∧ ¬ NullRelP q3 B3 (A3 ∩ B3) 2 z := by

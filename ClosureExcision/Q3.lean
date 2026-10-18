@@ -322,7 +322,7 @@ theorem Φ_z3 : Φ z3 = 6 := by
   simp only [face, ι3, id]
   decide
 
-/-- **Theorem B.** For the interior cover `{A3, B3}` of `Q₃`, the chain `z3` is a relative
+/-- **Theorem 2.** For the interior cover `{A3, B3}` of `Q₃`, the chain `z3` is a relative
 2-cycle of `(B3, A3 ∩ B3)` that is null in `(Q₃, A3)` but not in `(B3, A3 ∩ B3)`: the excision
 map `H₂(B3, A3 ∩ B3) → H₂(Q₃, A3)` is not injective. -/
 theorem q3_excision_not_injective :

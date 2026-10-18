@@ -9,9 +9,9 @@ those conditions equivalent to continuity, in Čech's sense (`f (cl s) ⊆ cl (f
 the cubes that Bubenik and Milićević build from the product and the inductive product:
 
 * `isPath_iff_continuous`, `isBoxSq_iff_continuous`, `isProdSq_iff_continuous`: paths and squares
-  for the unit interval, fact (2.1) of the paper;
+  for the unit interval, fact (1) of the paper;
 * `isCube_iff_continuous`, `isPlusCube_iff_continuous`: cubes for the two-point intervals,
-  facts (2.2) and (2.3).
+  facts (2) and (3).
 -/
 
 namespace ClosureExcision
