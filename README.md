@@ -24,6 +24,10 @@ Lean 4 formalizations of the results in papers by Taksch Dube (Kent State Univer
 
 Each statement in a `check_axioms.lean` depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. CI checks this on every pull request and builds with warnings as errors, so a `sorry` fails the build.
 
+## License
+
+Apache License 2.0, the license of Mathlib; see `LICENSE`.
+
 ## Excision fails for inductive-product cubical homology of closure spaces
 
 Library `ClosureExcision`, scripts in `scripts/closure-space-excision/`. Statement numbers are the paper's; each kind of statement is numbered separately.

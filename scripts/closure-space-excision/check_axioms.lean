@@ -44,3 +44,8 @@ open ClosureExcision
 #print axioms ClosureExcision.box_excision_not_injective_of_joined
 #print axioms ClosureExcision.circle_interiorCover
 #print axioms ClosureExcision.circle_box_excision_not_injective
+#print axioms ClosureExcision.IsPath.pext_comp
+#print axioms ClosureExcision.sector_sqA1
+#print axioms ClosureExcision.sector_sqA2
+#print axioms ClosureExcision.sector_sqB1
+#print axioms ClosureExcision.sector_sqB2
