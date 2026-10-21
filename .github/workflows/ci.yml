@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: leanprover/lean-action@v1
+        with:
+          build-args: --wfail
+      - name: Check axioms
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(scripts/*/check_axioms.lean)
+          for f in "${files[@]}"; do lake env lean "$f"; done > axioms.txt
+          cat axioms.txt
+          # Lean wraps long axiom lists over several lines, so parse the output as one line.
+          flat=$(tr '\n' ' ' < axioms.txt)
+          expected=$(cat /dev/null "${files[@]}" | grep -c '^#print axioms' || true)
+          found=$(grep -o -E 'depends on axioms|does not depend on any axioms' <<< "$flat" | wc -l)
+          bad=$(grep -o 'depends on axioms: \[[^]]*\]' <<< "$flat" | sed 's/.*\[//; s/\]$//' | tr ',' '\n' | tr -d ' ' | grep -vxE 'propext|Classical\.choice|Quot\.sound' || true)
+          if [ "$found" -ne "$expected" ]; then echo "Expected $expected axiom reports, found $found"; exit 1; fi
+          if [ -n "$bad" ]; then echo "Disallowed axioms:" $bad; exit 1; fi
