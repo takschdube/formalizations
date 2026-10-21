@@ -1,12 +1,12 @@
 # formalizations
 
-Lean 4 formalizations of the results in papers by Taksch Dube (Kent State University). Each paper has its own Lean library in this repository and is cited by a git tag and a Zenodo DOI minted from that tag.
+Lean 4 formalizations of the results in papers by Taksch Dube (Kent State University). Each paper has its own Lean library in this repository and cites the repository at a git tag.
 
 ## Papers
 
-| Paper | MSC 2020 | Library | Tag | DOI |
-|---|---|---|---|---|
-| Excision fails for inductive-product cubical homology of closure spaces | 55N35 (primary), 54A05, 05C10, 68V20 | `ClosureExcision` | pending | pending |
+| Paper | MSC 2020 | Library | Tag |
+|---|---|---|---|
+| Excision fails for inductive-product cubical homology of closure spaces | 55N35 (primary), 54A05, 05C10, 68V20 | `ClosureExcision` | `closure-space-excision-v1` |
 
 ## Layout
 
