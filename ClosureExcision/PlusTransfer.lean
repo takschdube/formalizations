@@ -5,7 +5,7 @@ import ClosureExcision.Q3
 
 The chain groups of the `(J₊, ⊡)` theory are built like those of the `(J₁, ⊡)` theory, with the
 cube condition `IsPlusCube` in place of `IsCube`. On a symmetric closure space the two conditions
-agree (`isCube_iff_isPlusCube`), so the subgroups coincide and Theorems A and B transfer.
+agree (`isCube_iff_isPlusCube`), so the subgroups coincide and Theorems 1 and 2 transfer.
 -/
 
 namespace ClosureExcision
