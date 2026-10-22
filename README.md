@@ -1,44 +1,76 @@
-# formalizations
+<div align="center">
 
-Lean 4 formalizations of the results in papers by Taksch Dube (Kent State University). Each paper has its own Lean library in this repository and cites the repository at a git tag.
+# Formalizations
+
+Lean 4 formalizations of research papers in mathematics
+
+[![CI](https://github.com/takschdube/formalizations/actions/workflows/ci.yml/badge.svg)](https://github.com/takschdube/formalizations/actions/workflows/ci.yml)
+[![Lean](https://img.shields.io/badge/Lean-v4.33.1-2563eb)](https://lean-lang.org)
+[![Mathlib](https://img.shields.io/badge/Mathlib-v4.33.1-7c3aed)](https://github.com/leanprover-community/mathlib4)
+[![License](https://img.shields.io/badge/license-Apache--2.0-0d9488)](LICENSE)
+
+</div>
+
+## Goal
+
+This repository collects the Lean 4 formalizations of papers by Taksch Dube and coauthors. The aim is a body of research mathematics in which every result is checked by machine and each new paper builds on the checked work of earlier ones. A paper joins the library on the day it is posted, formalized in full: every theorem, proposition and lemma. Its definitions remain available to later papers, so the library extends into each area of mathematics that the papers reach.
+
+## Organization
+
+```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
+flowchart TB
+    P["<b>Paper libraries</b><br/>one per paper, frozen at its release"]
+    S["<b>Subject libraries</b><br/>definitions shared by several papers"]
+    M["<b>Mathlib</b><br/>general formalized mathematics"]
+    P --> S --> M
+    classDef paper fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef subject fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
+    classDef base fill:#ccfbf1,stroke:#0d9488,color:#134e4a
+    class P paper
+    class S subject
+    class M base
+```
+
+Each layer imports the ones below it.
+
+- **Paper libraries.** Each paper is a Lean library in the folder of the same name, with a README that maps the paper's statements to files. A paper cites its release, the tag `<paper>-v1`, which never moves, so Mathlib upgrades on `main` do not change the code a paper cites.
+- **Subject libraries.** A definition that a second paper needs moves out of the first paper's library into a subject library that both import. Results of general use can move on into Mathlib, which is why this library uses Mathlib's license.
+- **Checks.** CI builds every library with warnings as errors, so an unfinished proof fails the build, and checks that each formalized statement depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
 
 ## Papers
 
-| Paper | MSC 2020 | Library | Tag |
-|---|---|---|---|
-| Excision fails for inductive-product cubical homology of closure spaces | 55N35 (primary), 54A05, 05C10, 68V20 | `ClosureExcision` | `closure-space-excision-v1` |
-
-## Layout
-
-- One Lake package and one Mathlib version for all papers, currently Lean 4 v4.33.1 with Mathlib v4.33.1.
-- One `lean_lib` per paper, in the folder of the same name.
-- `scripts/<paper>/` holds the paper's axiom check `check_axioms.lean` and any other script the paper cites.
-- Fields are recorded as MSC codes in the table above, primary first, not as folders. Definitions that a second paper needs move into a subject folder, such as `ClosureSpace/`, which both libraries import.
-- A paper's tag (`<paper>-v1`, then `-v2` for a revision) never moves. Later Mathlib upgrades on `main` do not change the code a paper cites.
+| Paper | Release |
+| :--- | :--- |
+| [Excision fails for inductive-product cubical homology of closure spaces](ClosureExcision) | `closure-space-excision-v1` |
 
 ## Building
 
-    lake exe cache get
-    lake build
-    lake env lean scripts/<paper>/check_axioms.lean
+```sh
+git clone https://github.com/takschdube/formalizations.git
+cd formalizations
+lake exe cache get    # compiled Mathlib, several GB
+lake build
+lake env lean scripts/closure-space-excision/check_axioms.lean
+```
 
-Each statement in a `check_axioms.lean` depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`. CI checks this on every pull request and builds with warnings as errors, so a `sorry` fails the build.
+To build the code a paper cites, check out its release first:
+
+```sh
+git checkout closure-space-excision-v1
+```
+
+## Citing
+
+```bibtex
+@misc{formalizations,
+  author       = {Dube, Taksch},
+  title        = {Lean 4 formalizations},
+  howpublished = {GitHub repository, \url{https://github.com/takschdube/formalizations}},
+  year         = {2026}
+}
+```
 
 ## License
 
-Apache License 2.0, the license of Mathlib; see `LICENSE`.
-
-## Excision fails for inductive-product cubical homology of closure spaces
-
-Library `ClosureExcision`, scripts in `scripts/closure-space-excision/`. Statement numbers are the paper's; each kind of statement is numbered separately.
-
-- `ClosureExcision/Basic.lean`: closure spaces, interiors, closures of reflexive relations.
-- `ClosureExcision/Cubes.lean`: (J1, box) cubes and chains; Theorem 1 for J1, Lemma 1, Theorem 4, Lemma 2, Proposition 1.
-- `ClosureExcision/Q3.lean`: Theorem 2 (interior cover of the 3-cube graph) for J1.
-- `ClosureExcision/Interval.lean`: (I, box) and (I, x) paths, squares and chains; Lemmas 3 and 4, Theorem 3 (a) for the six-cycle and (b).
-- `ClosureExcision/Winding.lean`: a winding number for maps into the six-cycle, which vanishes on boundaries of jointly continuous squares (Lebesgue number); Theorem 3 (c).
-- `ClosureExcision/DegreeOne.lean`: Proposition 2 (excision fails in degree one when two points are joined in A and in B but not in their intersection) and Theorem 3 (a) for the circle.
-- `ClosureExcision/Bridge.lean`: Cech continuity, product and inductive product closures, and the equivalence of conditions (1) to (3) with continuity.
-- `ClosureExcision/PlusTransfer.lean`: the (J+, box) chain groups agree with the (J1, box) ones on symmetric spaces; Theorems 1 and 2 for the directed interval.
-- `scripts/closure-space-excision/check_axioms.lean`: the axiom check for the formalized statements.
-- `scripts/closure-space-excision/q3_homology.py`: exact enumeration of the singular cubes of Q3 up to dimension 3 and the ranks in Remark 3 (mod 2^31 - 1). Run with `python3 scripts/closure-space-excision/q3_homology.py`.
+Apache License 2.0, the license of Mathlib. See [LICENSE](LICENSE).
