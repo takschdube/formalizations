@@ -1,14 +1,27 @@
-import ClosureExcision.Q3
+import Formalizations.AlgebraicTopology.CubicalHomology.TwoPointInterval.Excision
 
 /-!
-# The directed interval on symmetric closure spaces
+# The directed interval
 
 The chain groups of the `(J₊, ⊡)` theory are built like those of the `(J₁, ⊡)` theory, with the
 cube condition `IsPlusCube` in place of `IsCube`. On a symmetric closure space the two conditions
-agree (`isCube_iff_isPlusCube`), so the subgroups coincide and Theorems 1 and 2 transfer.
+agree (`isCube_iff_isPlusCube`), so the chain groups coincide and excision for covers by iterated
+interiors holds for the directed interval as well.
+
+## Main statements
+
+* `ClosureSpace.cubesInP_eq`: on a symmetric closure space the `(J₊, ⊡)` and `(J₁, ⊡)` chain
+  groups coincide.
+* `ClosureSpace.plus_excision_of_iterate_int_cover`, `ClosureSpace.plus_cube_small`: [DT],
+  Theorem 1 and Proposition 1 for the directed interval, on symmetric closure spaces.
+
+## References
+
+* [DT] T. Dube and A. Tregub, *Excision fails for inductive-product cubical homology of closure
+  spaces*.
 -/
 
-namespace ClosureExcision
+namespace ClosureSpace
 
 open Finset
 
@@ -78,7 +91,8 @@ theorem isRelCycleP_iff (S T : Set X) (n : ℕ) (z : Chain X (n + 1)) :
   unfold IsRelCycleP IsRelCycle
   rw [cubesInP_eq hsymm, cubesInP_eq hsymm, degInP_eq hsymm]
 
-/-- **Theorem 1 for the directed interval** on a symmetric closure space. -/
+/-- **Excision for covers by iterated interiors, for the directed interval** ([DT], Theorem 1),
+on a symmetric closure space. -/
 theorem plus_excision_of_iterate_int_cover {A B : Set X} {k : ℕ}
     (hcov : ∀ x, x ∈ C.int^[k] A ∨ x ∈ C.int^[k] B) (d : ℕ) (hd : d + 1 ≤ 2 * k) :
     (∀ z ∈ cubesInP C B d, NullRelP C Set.univ A d z → NullRelP C B (A ∩ B) d z) ∧
@@ -96,13 +110,6 @@ theorem plus_cube_small {n k : ℕ} {σ : (Fin n → Bool) → X} (hσ : C.IsPlu
 
 end Symmetric
 
-/-- **Theorem 2 for the directed interval.** -/
-theorem q3_plus_excision_not_injective :
-    ∃ z : Chain (Fin 3 → Bool) 2, IsRelCycleP q3 B3 (A3 ∩ B3) 1 z ∧
-      NullRelP q3 Set.univ A3 2 z ∧ ¬ NullRelP q3 B3 (A3 ∩ B3) 2 z := by
-  simp only [isRelCycleP_iff q3_symm, nullRelP_iff q3_symm]
-  exact q3_excision_not_injective
-
 end
 
-end ClosureExcision
+end ClosureSpace

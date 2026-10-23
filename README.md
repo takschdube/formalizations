@@ -13,36 +13,48 @@ Lean 4 formalizations of research papers in mathematics
 
 ## Goal
 
-This repository collects the Lean 4 formalizations of papers by Taksch Dube and coauthors. The aim is a body of research mathematics in which every result is checked by machine and each new paper builds on the checked work of earlier ones. A paper joins the library on the day it is posted, formalized in full: every theorem, proposition and lemma. Its definitions remain available to later papers, so the library extends into each area of mathematics that the papers reach.
+This repository collects the Lean 4 formalizations of papers by Taksch Dube and coauthors. The aim is a body of research mathematics in which every result is checked by machine and each new paper builds on the checked work of earlier ones. A paper joins the library on the day it is posted, formalized in full: every theorem, proposition and lemma. Its general definitions and theorems go into the areas of the library, where later papers build on them, so the library extends into each area of mathematics that the papers reach.
 
 ## Organization
 
 ```mermaid
-%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
+%%{init: {"flowchart": {"wrappingWidth": 420}}}%%
 flowchart TB
-    P["<b>Paper libraries</b><br/>one per paper, frozen at its release"]
-    S["<b>Subject libraries</b><br/>definitions shared by several papers"]
-    M["<b>Mathlib</b><br/>general formalized mathematics"]
-    P --> S --> M
+    P["<b>Excision fails for inductive-product cubical homology of closure spaces</b><br/>Papers/ClosureExcision"]
+    T["<b>Cubical homology: the two-point intervals</b><br/>AlgebraicTopology/CubicalHomology/TwoPointInterval"]
+    U["<b>Cubical homology: the unit interval</b><br/>AlgebraicTopology/CubicalHomology/UnitInterval"]
+    C["<b>Closure spaces</b><br/>Topology/ClosureSpace"]
+    M["<b>Mathlib</b>"]
+    P --> T & U
+    T & U --> C
+    C --> M
     classDef paper fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
-    classDef subject fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
+    classDef area fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
     classDef base fill:#ccfbf1,stroke:#0d9488,color:#134e4a
     class P paper
-    class S subject
+    class T,U,C area
     class M base
 ```
 
-Each layer imports the ones below it.
+Arrows are imports. The library has two parts.
 
-- **Paper libraries.** Each paper is a Lean library in the folder of the same name, with a README that maps the paper's statements to files. A paper cites its release, the tag `<paper>-v1`, which never moves, so Mathlib upgrades on `main` do not change the code a paper cites.
-- **Subject libraries.** A definition that a second paper needs moves out of the first paper's library into a subject library that both import. Results of general use can move on into Mathlib, which is why this library uses Mathlib's license.
-- **Checks.** CI builds every library with warnings as errors, so an unfinished proof fails the build, and checks that each formalized statement depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+- **`Formalizations/`** holds definitions and theorems that do not depend on a particular paper, in folders named as in Mathlib. A paper's general results go here, where later papers import them. Results of general use can move on into Mathlib, which is why this library uses Mathlib's license.
+- **`Papers/`** holds one library per paper, with the constructions and examples specific to it and a README that maps the paper's statements to files. A paper cites its release, the tag `<paper>-v1`, which never moves, so later changes on `main` do not change the code a paper cites.
+
+CI builds every library with warnings as errors, so an unfinished proof fails the build, and checks that each statement a paper cites depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.
+
+## Areas
+
+| Area | Contents |
+| :--- | :--- |
+| [Closure spaces](Formalizations/Topology/ClosureSpace) | Čech closure spaces, continuity, closure spaces of relations and of topological spaces, the product and the inductive product |
+| [Cubical homology](Formalizations/AlgebraicTopology/CubicalHomology) | Singular cubes, chains and normalized relative homology of closure spaces, for the two-point intervals and for the unit interval; excision for small cubes; vanishing of the first homology for the unit interval with the inductive product |
 
 ## Papers
 
 | Paper | Release |
 | :--- | :--- |
-| [Excision fails for inductive-product cubical homology of closure spaces](ClosureExcision) | `closure-space-excision-v1` |
+| [Excision fails for inductive-product cubical homology of closure spaces](Papers/ClosureExcision) | `closure-space-excision-v1` |
 
 ## Building
 

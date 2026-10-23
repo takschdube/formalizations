@@ -1,8 +1,0 @@
-import ClosureExcision.Basic
-import ClosureExcision.Cubes
-import ClosureExcision.Q3
-import ClosureExcision.Interval
-import ClosureExcision.Bridge
-import ClosureExcision.Winding
-import ClosureExcision.DegreeOne
-import ClosureExcision.PlusTransfer
