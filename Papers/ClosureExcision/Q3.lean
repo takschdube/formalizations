@@ -1,4 +1,4 @@
-import ClosureExcision.Cubes
+import Formalizations.AlgebraicTopology.CubicalHomology.TwoPointInterval.Directed
 
 /-!
 # The 3-cube: excision fails in degree 2
@@ -13,11 +13,21 @@ In `(Q₃, A)` it is null because `∂ι` differs from `z` by the three faces th
 `A`. In `(B, A ∩ B)` it is not null: the winding number around the hexagon, composed with the
 boundary, vanishes on boundaries, on chains in the hexagon and on degenerate chains, and takes the
 value `6` on `z`.
+
+## Main statements
+
+* `ClosureExcision.q3_excision_not_injective`: [DT], Theorem 2.
+* `ClosureExcision.q3_plus_excision_not_injective`: [DT], Theorem 2 for the directed interval.
+
+## References
+
+* [DT] T. Dube and A. Tregub, *Excision fails for inductive-product cubical homology of closure
+  spaces*.
 -/
 
 namespace ClosureExcision
 
-open Finset
+open Finset ClosureSpace
 
 noncomputable section
 
@@ -62,53 +72,6 @@ theorem q3_symm : ∀ x y, y ∈ q3.cl {x} → x ∈ q3.cl {y} := by
 theorem q3_isCube_iff_isPlusCube {n : ℕ} (σ : (Fin n → Bool) → (Fin 3 → Bool)) :
     q3.IsCube σ ↔ q3.IsPlusCube σ :=
   isCube_iff_isPlusCube q3_symm σ
-
-/-! ## `∂∂ = 0` on 3-cubes -/
-
-theorem face_face_01 {X : Type*} (τ : (Fin 3 → Bool) → X) (b c : Bool) :
-    face 0 c (face 0 b τ) = face 0 b (face 1 c τ) := by
-  funext y
-  simp only [face]
-  congr 1
-  revert b c y
-  decide
-
-theorem face_face_02 {X : Type*} (τ : (Fin 3 → Bool) → X) (b c : Bool) :
-    face 1 c (face 0 b τ) = face 0 b (face 2 c τ) := by
-  funext y
-  simp only [face]
-  congr 1
-  revert b c y
-  decide
-
-theorem face_face_12 {X : Type*} (τ : (Fin 3 → Bool) → X) (b c : Bool) :
-    face 1 c (face 1 b τ) = face 1 b (face 2 c τ) := by
-  funext y
-  simp only [face]
-  congr 1
-  revert b c y
-  decide
-
-/-- `∂∂ = 0` on a single 3-cube, for any target. -/
-theorem bd_bd_three {X : Type*} (τ : (Fin 3 → Bool) → X) :
-    bd 1 (bd 2 (Finsupp.single τ 1)) = 0 := by
-  rw [bd_single]
-  simp only [bdCube, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, map_add, map_zsmul,
-    map_sub, bd_single]
-  simp only [Fin.succ_zero_eq_one, Fin.succ_one_eq_two]
-  simp only [face_face_01, face_face_02, face_face_12]
-  simp only [sgn, Fin.val_zero, Fin.val_one, Fin.val_two]
-  norm_num
-  abel
-
-/-- `∂∂ = 0` on all 3-chains. -/
-theorem bd_bd_three' {X : Type*} (w : Chain X 3) : bd 1 (bd 2 w) = 0 := by
-  induction w using Finsupp.induction_linear with
-  | zero => simp
-  | add f g hf hg => simp [hf, hg]
-  | single τ k =>
-      have h : Finsupp.single τ k = k • Finsupp.single τ 1 := by simp
-      rw [h, map_zsmul, map_zsmul, bd_bd_three, smul_zero]
 
 /-! ## The winding number around the hexagon `A3 ∩ B3` -/
 
@@ -322,9 +285,9 @@ theorem Φ_z3 : Φ z3 = 6 := by
   simp only [face, ι3, id]
   decide
 
-/-- **Theorem 2.** For the interior cover `{A3, B3}` of `Q₃`, the chain `z3` is a relative
-2-cycle of `(B3, A3 ∩ B3)` that is null in `(Q₃, A3)` but not in `(B3, A3 ∩ B3)`: the excision
-map `H₂(B3, A3 ∩ B3) → H₂(Q₃, A3)` is not injective. -/
+/-- **Excision fails in degree 2** ([DT], Theorem 2). For the interior cover `{A3, B3}` of `Q₃`,
+the chain `z3` is a relative 2-cycle of `(B3, A3 ∩ B3)` that is null in `(Q₃, A3)` but not in
+`(B3, A3 ∩ B3)`: the excision map `H₂(B3, A3 ∩ B3) → H₂(Q₃, A3)` is not injective. -/
 theorem q3_excision_not_injective :
     ∃ z : Chain (Fin 3 → Bool) 2, IsRelCycle q3 B3 (A3 ∩ B3) 1 z ∧
       NullRel q3 Set.univ A3 2 z ∧ ¬ NullRel q3 B3 (A3 ∩ B3) 2 z := by
@@ -350,6 +313,13 @@ theorem q3_excision_not_injective :
     have := Φ_eq_zero_of_null hnull
     rw [Φ_z3] at this
     norm_num at this
+
+/-- **Excision fails in degree 2 for the directed interval** ([DT], Theorem 2). -/
+theorem q3_plus_excision_not_injective :
+    ∃ z : Chain (Fin 3 → Bool) 2, IsRelCycleP q3 B3 (A3 ∩ B3) 1 z ∧
+      NullRelP q3 Set.univ A3 2 z ∧ ¬ NullRelP q3 B3 (A3 ∩ B3) 2 z := by
+  simp only [isRelCycleP_iff q3_symm, nullRelP_iff q3_symm]
+  exact q3_excision_not_injective
 
 end
 

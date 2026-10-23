@@ -1,6 +1,6 @@
 name = "formalizations"
 license = "Apache-2.0"
-defaultTargets = ["ClosureExcision"]
+defaultTargets = ["Formalizations", "ClosureExcision"]
 
 [[require]]
 name = "mathlib"
@@ -8,4 +8,8 @@ scope = "leanprover-community"
 rev = "v4.33.1"
 
 [[lean_lib]]
+name = "Formalizations"
+
+[[lean_lib]]
 name = "ClosureExcision"
+srcDir = "Papers"

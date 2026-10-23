@@ -1,4 +1,4 @@
-import ClosureExcision.Interval
+import ClosureExcision.SixCycle
 
 /-!
 # A winding number for the six-cycle in the `(I, ×)` theory
@@ -13,13 +13,20 @@ For a jointly continuous square, a Lebesgue number of the cover of `𝕀 × 𝕀
 the `N[v]` gives a grid whose cells map into closed neighbourhoods. The steps around each cell
 cancel, so the winding numbers of the four faces cancel. The hexagon loop has winding number `6`.
 
-Main result:
-* `c6_prod_H1_ne_zero`: the hexagon loop is a `1`-cycle of `C₆` that does not bound in `(I, ×)`.
+## Main statements
+
+* `ClosureExcision.c6_prod_H1_ne_zero`: the hexagon loop is a `1`-cycle of `C₆` that does not
+  bound in `(I, ×)` ([DT], Theorem 3 (c)).
+
+## References
+
+* [DT] T. Dube and A. Tregub, *Excision fails for inductive-product cubical homology of closure
+  spaces*.
 -/
 
 namespace ClosureExcision
 
-open Topology Filter Metric Finset
+open Topology Filter Metric Finset ClosureSpace
 
 local notation "𝕀" => unitInterval
 
@@ -266,7 +273,7 @@ theorem grid_sum (H V : ℕ → ℕ → ℤ) (n : ℕ)
 
 /-- **The winding number vanishes on boundaries of jointly continuous squares.** -/
 theorem pathWind_sqBd {σ : 𝕀 × 𝕀 → ZMod 6} (hσ : IsProdSq c6 σ) : pathWind (sqBd σ) = 0 := by
-  obtain ⟨n, hn, h⟩ := hσ.cellFine
+  obtain ⟨n, hn, h⟩ := IsProdSq.cellFine hσ
   set g : ℕ → ℕ → ZMod 6 := fun i j => σ (ppt n i, ppt n j) with hg
   set H : ℕ → ℕ → ℤ := fun i j => c6Step (g i j) (g (i + 1) j) with hH
   set V : ℕ → ℕ → ℤ := fun i j => c6Step (g i j) (g i (j + 1)) with hV
@@ -357,7 +364,7 @@ theorem constIn_le_ker_pathWind : constIn (Set.univ : Set (ZMod 6)) ≤ pathWind
   show pathWind _ = 0
   rw [pathWind_single, wnum_const]
 
-/-- **`H₁` of `C₆` does not vanish in `(I, ×)`.** The hexagon loop is a `1`-cycle of winding
+/-- **`H₁` of `C₆` does not vanish in `(I, ×)`** ([DT], Theorem 3 (c)). The hexagon loop is a `1`-cycle of winding
 number `6`, and the winding number vanishes on boundaries of jointly continuous squares and on
 constant paths. -/
 theorem c6_prod_H1_ne_zero :
